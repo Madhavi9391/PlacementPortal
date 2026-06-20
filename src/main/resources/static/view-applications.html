@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Applications</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+
+<h2>View Applications</h2>
+    <a href="company-dashboard.html">Dashboard</a>
+    <a href="post-job.html">Post Job</a>
+    <a href="view-applications.html">Applications</a>
+</nav>
+
+<input type="text" id="companyName"
+       placeholder="Enter Company Name">
+
+<button onclick="loadApplications()">
+    Load Applications
+</button>
+
+<br><br>
+
+<table border="1">
+
+    <thead>
+    <tr>
+        <th>Student Email</th>
+        <th>Job Title</th>
+        <th>Company Name</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+
+    <tbody id="applicationTable">
+    </tbody>
+
+</table>
+
+<script>
+
+    function loadApplications(){
+
+        const companyName =
+            document.getElementById("companyName").value;
+
+        fetch('/api/applications/company/' + companyName)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                let rows = "";
+
+                data.forEach(application => {
+
+                    rows += `
+                <tr>
+                    <td>${application.studentEmail}</td>
+                    <td>${application.jobTitle}</td>
+                    <td>${application.companyName}</td>
+                    <td>${application.status}</td>
+                </tr>
+            `;
+
+                });
+
+                document.getElementById("applicationTable")
+                    .innerHTML = rows;
+
+            })
+
+            .catch(error => {
+
+                console.log(error);
+                alert("Error loading applications");
+
+            });
+
+    }
+
+</script>
+
+</body>
+</html>

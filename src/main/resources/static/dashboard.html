@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Placement Portal Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<nav>
+    <h2>Placement Portal</h2>
+
+    <a href="index.html">Home</a>
+    <a href="student-dashboard.html">Student Dashboard</a>
+    <a href="job-search.html">Jobs</a>
+
+</nav>
+
+
+
+<h1>Placement Analytics Dashboard</h1>
+
+
+<div class="dashboard">
+
+
+    <div class="card">
+
+        <h3>Students</h3>
+
+        <p id="students">0</p>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <h3>Companies</h3>
+
+        <p id="companies">0</p>
+
+    </div>
+
+
+
+
+    <div class="card">
+
+        <h3>Jobs</h3>
+
+        <p id="jobs">0</p>
+
+    </div>
+
+
+
+
+    <div class="card">
+
+        <h3>Applications</h3>
+
+        <p id="applications">0</p>
+
+    </div>
+
+
+
+</div>
+
+
+
+<div class="chart">
+
+    <canvas id="myChart"></canvas>
+
+</div>
+
+
+
+
+<script>
+
+
+    fetch('/api/dashboard')
+
+
+        .then(response => response.json())
+
+
+        .then(data => {
+
+
+
+            document.getElementById("students").innerHTML = data.students;
+
+            document.getElementById("companies").innerHTML = data.companies;
+
+            document.getElementById("jobs").innerHTML = data.jobs;
+
+            document.getElementById("applications").innerHTML = data.applications;
+
+
+
+            new Chart(document.getElementById("myChart"),{
+
+
+                type:"bar",
+
+
+                data:{
+
+
+                    labels:[
+                        "Students",
+                        "Companies",
+                        "Jobs",
+                        "Applications"
+                    ],
+
+
+
+                    datasets:[{
+
+                        label:"Placement Details",
+
+
+                        data:[
+
+                            data.students,
+                            data.companies,
+                            data.jobs,
+                            data.applications
+
+                        ]
+
+
+                    }]
+
+
+                }
+
+
+
+            });
+
+
+
+
+        })
+
+
+        .catch(error=>{
+
+            console.log("Error:",error);
+
+        });
+
+
+
+</script>
+
+
+
+</body>
+</html>

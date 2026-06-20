@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <h2>Student Dashboard</h2>
+
+    <a href="job-search.html">Jobs</a>
+    <a href="profile.html">Profile</a>
+    <a href="student-dashboard.html">Dashboard</a>
+    <a href="my-applications.html">My Applications</a>
+
+    <a href="index.html">Logout</a>
+
+</nav>
+
+
+
+<h1>Welcome Student</h1>
+
+
+
+<div class="dashboard">
+
+
+    <div class="card">
+
+        <h3>Applied Jobs</h3>
+
+        <p id="applied">0</p>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <h3>Shortlisted</h3>
+
+        <p id="shortlisted">0</p>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <h3>Selected</h3>
+
+        <p id="selected">0</p>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    fetch('/api/applications/count')
+
+
+        .then(response=>response.json())
+
+
+        .then(data=>{
+
+
+            document.getElementById("applied").innerHTML=data.applicationsApplied;
+
+            document.getElementById("shortlisted").innerHTML=data.shortlisted;
+
+            document.getElementById("selected").innerHTML=data.selected;
+
+
+        })
+
+
+        .catch(error=>console.log(error));
+
+
+</script>
+
+
+
+</body>
+
+</html>

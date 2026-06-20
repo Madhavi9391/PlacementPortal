@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Applications</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <a href="student-dashboard.html">Dashboard</a>
+    <a href="job-search.html">Jobs</a>
+    <a href="profile.html">Profile</a>
+    <a href="my-applications.html">My Applications</a>
+</nav>
+
+<div class="profile-box">
+
+    <h2>My Applications</h2>
+
+    <input type="email"
+           id="studentEmail"
+           placeholder="Enter Your Email">
+
+    <button onclick="loadApplications()">
+        Load Applications
+    </button>
+
+    <table border="1" width="100%">
+        <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody id="applicationsTable">
+        </tbody>
+
+    </table>
+
+</div>
+<script>
+
+    function loadApplications(){
+
+        let email = document.getElementById("studentEmail").value;
+
+        fetch('/api/applications')
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                let table = document.getElementById("applicationsTable");
+
+                table.innerHTML = "";
+
+
+                data.forEach(app => {
+
+
+                    if(app.studentEmail == email){
+
+
+                        table.innerHTML += `
+
+                <tr>
+
+                    <td>${app.jobTitle}</td>
+
+                    <td>${app.companyName}</td>
+
+                    <td>${app.status}</td>
+
+                </tr>
+
+                `;
+
+
+                    }
+
+
+                });
+
+
+                console.log("Table updated");
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+    </script>
+</body>
+</html>

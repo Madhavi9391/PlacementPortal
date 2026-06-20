@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Job Search</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <h2>Placement Portal</h2>
+
+    <a href="student-dashboard.html">Dashboard</a>
+    <a href="job-search.html">Jobs</a>
+    <a href="profile.html">Profile</a>
+    <a href="my-applications.html">My Applications</a>
+
+    <a href="index.html">Logout</a>
+
+</nav>
+
+
+
+<h1>Available Jobs</h1>
+
+
+<div id="jobsContainer" class="jobs">
+
+</div>
+
+
+
+<script>
+
+
+    let jobs = [
+
+        {
+            id:1,
+            role:"Software Developer",
+            company:"TCS",
+            package:"6 LPA",
+            location:"Hyderabad"
+        },
+
+
+        {
+            id:2,
+            role:"Java Developer",
+            company:"Infosys",
+            package:"5 LPA",
+            location:"Bangalore"
+        },
+
+
+        {
+            id:3,
+            role:"Frontend Developer",
+            company:"Wipro",
+            package:"4.5 LPA",
+            location:"Chennai"
+        }
+
+    ];
+
+
+
+    let container = document.getElementById("jobsContainer");
+
+
+
+    jobs.forEach(job => {
+
+
+        container.innerHTML += `
+
+
+    <div class="job-card">
+
+
+        <h2>${job.role}</h2>
+
+
+        <p><b>Company:</b> ${job.company}</p>
+
+
+        <p><b>Package:</b> ${job.package}</p>
+
+
+        <p><b>Location:</b> ${job.location}</p>
+
+
+
+        <button onclick="applyJob(${job.id})">
+
+            Apply
+
+        </button>
+
+
+    </div>
+
+
+    `;
+
+
+    });
+
+
+
+
+
+    function applyJob(jobId){
+
+
+        let selectedJob = jobs.find(job => job.id === jobId);
+
+
+
+        let email = localStorage.getItem("email");
+
+
+
+        fetch('/api/applications/apply',{
+
+
+            method:"POST",
+
+
+            headers:{
+
+
+                "Content-Type":"application/json"
+
+
+            },
+
+
+            body:JSON.stringify({
+
+
+                studentEmail: email,
+
+
+                jobTitle: selectedJob.role,
+
+
+                companyName: selectedJob.company,
+
+
+                status:"Applied"
+
+
+            })
+
+
+        })
+
+
+
+            .then(response => response.json())
+
+
+            .then(data => {
+
+
+                alert("Job Applied Successfully");
+
+
+            })
+
+
+            .catch(error => {
+
+
+                console.log(error);
+
+
+            });
+
+
+
+    }
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

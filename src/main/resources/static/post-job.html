@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Job</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+
+<h2>Post New Job</h2>
+    <a href="company-dashboard.html">Dashboard</a>
+    <a href="post-job.html">Post Job</a>
+    <a href="view-applications.html">Applications</a>
+</nav>
+
+<input type="text" id="jobTitle" placeholder="Job Title"><br><br>
+
+<input type="text" id="companyName" placeholder="Company Name"><br><br>
+
+<input type="text" id="location" placeholder="Location"><br><br>
+
+<input type="number" id="salary" placeholder="Salary"><br><br>
+
+<button onclick="postJob()">Post Job</button>
+
+<script>
+
+    function postJob(){
+
+        fetch('/api/jobs/add',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json'
+            },
+
+            body:JSON.stringify({
+
+                jobTitle:document.getElementById('jobTitle').value,
+
+                companyName:document.getElementById('companyName').value,
+
+                location:document.getElementById('location').value,
+
+                salary:document.getElementById('salary').value
+
+            })
+
+        })
+
+            .then(response=>response.json())
+
+            .then(data=>{
+
+                alert("Job Posted Successfully");
+
+            })
+
+            .catch(error=>{
+
+                console.log(error);
+
+            });
+
+    }
+
+</script>
+
+</body>
+</html>

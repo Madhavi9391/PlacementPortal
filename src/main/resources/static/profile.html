@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <h2>Student Profile</h2>
+
+    <a href="student-dashboard.html">Dashboard</a>
+
+    <a href="job-search.html">Jobs</a>
+    <a href="profile.html">Profile</a>
+
+</nav>
+
+
+
+<div class="profile-box">
+
+
+    <h2>My Profile</h2>
+
+
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter name">
+
+
+
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Enter email">
+
+
+
+    <label>Skills</label>
+    <input type="text" id="skills" placeholder="Java, HTML, SQL">
+
+
+
+    <label>Resume</label>
+
+    <input type="file" id="resume">
+    <button onclick="uploadResume()">Upload Resume</button>
+
+
+    <button onclick="saveProfile()">
+
+        Save Profile
+
+    </button>
+    <button onclick="loadProfile()">
+        Load Profile
+    </button>
+
+
+
+</div>
+
+
+
+
+<script>
+
+
+    function saveProfile(){
+
+        let name = document.getElementById('name').value;
+        let email = document.getElementById('email').value;
+        let skills = document.getElementById('skills').value;
+
+        if(name.trim()==="" || email.trim()==="" || skills.trim()===""){
+            alert("Please fill all fields");
+            return;
+        }
+
+        fetch('/api/students',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json'
+            },
+
+            body:JSON.stringify({
+                name:name,
+                email:email,
+                phone:'',
+                password:'',
+                skills:skills
+            })
+
+        })
+
+            .then(response=>response.json())
+
+            .then(data=>{
+
+                alert("Profile Saved Successfully");
+                console.log(data);
+
+            })
+
+            .catch(error=>{
+                console.log(error);
+            });
+
+    }
+    function loadProfile() {
+
+        alert("Load button clicked");
+
+        const email = document.getElementById('email').value;
+
+        alert("Email: " + email);
+
+        fetch('/api/students/' + email)
+
+            .then(response => {
+                alert("API Response Received");
+                return response.json();
+            })
+
+            .then(data => {
+
+                alert(JSON.stringify(data));
+
+                if(data == null){
+                    alert("Student not found");
+                    return;
+                }
+
+                document.getElementById('name').value = data.name;
+                document.getElementById('email').value = data.email;
+                document.getElementById('skills').value = data.skills || '';
+
+            })
+
+            .catch(error => {
+                alert("Error: " + error);
+                console.log(error);
+            });
+    }
+    function uploadResume() {
+
+        const fileInput = document.getElementById("resume");
+        const email = document.getElementById("email").value;
+
+        if(email.trim() === ""){
+            alert("Please enter email first");
+            return;
+        }
+
+        if(fileInput.files.length === 0){
+            alert("Please select a resume");
+            return;
+        }
+
+        let formData = new FormData();
+
+        formData.append("file", fileInput.files[0]);
+        formData.append("email", email);
+
+        fetch("/api/resume/upload", {
+
+            method: "POST",
+
+            body: formData
+
+        })
+
+            .then(response => response.text())
+
+            .then(data => {
+
+                alert(data);
+
+            })
+
+            .catch(error => {
+
+                console.log(error);
+                alert("Upload Failed");
+
+            });
+    }
+</script>
+
+
+</body>
+
+</html>

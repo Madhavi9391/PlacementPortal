@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>Company Dashboard</h2>
+
+    <a href="company-dashboard.html">Dashboard</a>
+    <a href="post-job.html">Post Job</a>
+    <a href="view-applications.html">Applications</a>
+</nav>
+
+<div class="profile-box">
+
+    <h2>Dashboard Statistics</h2>
+
+    <label>Company Name</label>
+    <input type="text" id="companyName"
+           placeholder="Enter Company Name">
+
+    <button onclick="loadDashboard()">
+        Load Dashboard
+    </button>
+
+    <br><br>
+
+    <p>
+        Jobs Posted:
+        <span id="jobsPosted">0</span>
+    </p>
+
+    <p>
+        Applications Received:
+        <span id="applicationsReceived">0</span>
+    </p>
+
+</div>
+
+<script>
+
+    function loadDashboard() {
+
+        const companyName =
+            document.getElementById("companyName").value;
+
+        if(companyName.trim() === ""){
+            alert("Please enter company name");
+            return;
+        }
+
+        fetch('/api/company-dashboard?companyName=' + companyName)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                document.getElementById("jobsPosted").innerText =
+                    data.jobsPosted;
+
+                document.getElementById("applicationsReceived").innerText =
+                    data.applicationsReceived;
+
+            })
+
+            .catch(error => {
+
+                console.log(error);
+                alert("Error loading dashboard");
+
+            });
+
+    }
+
+</script>
+
+</body>
+</html>

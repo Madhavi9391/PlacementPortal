@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Company Applications</title>
+</head>
+
+<body>
+
+<h2>Applicants</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Student Email</th>
+        <th>Job Title</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    <tbody id="applicationsTable"></tbody>
+
+</table>
+
+
+<script>
+
+
+    fetch('/api/applications')
+
+        .then(response => response.json())
+
+        .then(data => {
+
+
+            let table = document.getElementById("applicationsTable");
+
+
+            data.forEach(app => {
+
+
+                table.innerHTML += `
+
+<tr>
+
+<td>${app.studentEmail}</td>
+
+<td>${app.jobTitle}</td>
+
+<td>${app.status}</td>
+
+
+<td>
+
+<button onclick="updateStatus(${app.id},'Shortlisted')">
+Shortlist
+</button>
+
+
+<button onclick="updateStatus(${app.id},'Selected')">
+Select
+</button>
+
+
+</td>
+
+</tr>
+
+`;
+
+            });
+
+
+        });
+
+
+
+    function updateStatus(id,status){
+
+        fetch('/api/applications/' + id + '/status?status=' + status, {
+
+            method:"PUT"
+
+        })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                alert("Status Updated");
+
+                location.reload();
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
