@@ -8,25 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-
     public void sendOtp(String toEmail, String otp) {
-
+        System.out.println("=====================");
+        System.out.println("Email:"+toEmail);
         System.out.println("OTP = " + otp);
-
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-
-            message.setTo(toEmail);
-            message.setSubject("Placement Portal OTP Verification");
-            message.setText("Your OTP is: " + otp);
-
-            mailSender.send(message);
-
-        } catch (Exception e) {
-            System.out.println("Email sending failed");
-            e.printStackTrace();
-        }
+        System.out.println("=====================");
     }
 }
