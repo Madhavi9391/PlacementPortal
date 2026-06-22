@@ -12,6 +12,8 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     public void sendOtp(String toEmail, String otp) {
+        System.out.println("OTP = " + otp);
+
 
         SimpleMailMessage message = new SimpleMailMessage();
 
