@@ -1,18 +1,32 @@
-public void sendOtp(String toEmail, String otp) {
+package com.madhavi.placementportal.service;
 
-    System.out.println("OTP = " + otp);
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
-    try {
-        SimpleMailMessage message = new SimpleMailMessage();
+@Service
+public class EmailService {
 
-        message.setTo(toEmail);
-        message.setSubject("Placement Portal OTP Verification");
-        message.setText("Your OTP is: " + otp);
+    @Autowired
+    private JavaMailSender mailSender;
 
-        mailSender.send(message);
+    public void sendOtp(String toEmail, String otp) {
 
-    } catch (Exception e) {
-        System.out.println("Email sending failed");
-        e.printStackTrace();
+        System.out.println("OTP = " + otp);
+
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+
+            message.setTo(toEmail);
+            message.setSubject("Placement Portal OTP Verification");
+            message.setText("Your OTP is: " + otp);
+
+            mailSender.send(message);
+
+        } catch (Exception e) {
+            System.out.println("Email sending failed");
+            e.printStackTrace();
+        }
     }
 }
